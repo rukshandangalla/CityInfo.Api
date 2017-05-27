@@ -19,8 +19,8 @@ namespace CityInfo.API.Controllers
             return Ok(city.PointsOfInterest);
         }
 
-        [HttpGet("{cityId}/pointsofinterest")]
-        public IActionResult GetPointsOfInterest(int cityId)
+        [HttpGet("{cityId}/pointsofinterest/{id}")]
+        public IActionResult GetPointOfInterest(int cityId, int id)
         {
             var city = CitiesDataStore.Current.Cities.FirstOrDefault(i => i.Id == cityId);
 
@@ -29,7 +29,14 @@ namespace CityInfo.API.Controllers
                 return NotFound();
             }
 
-            return Ok(city.PointsOfInterest);
+            var pointOfInterest = city.PointsOfInterest.FirstOrDefault(p => p.Id == id);
+
+            if (pointOfInterest == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(pointOfInterest);
         }
     }
 }

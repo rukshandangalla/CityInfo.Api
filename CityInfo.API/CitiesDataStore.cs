@@ -29,7 +29,7 @@ namespace CityInfo.API
                         },
                         new PointsOfInterestsDto()
                         {
-                            Id = 1,
+                            Id = 2,
                             Name = "Manhatton Fish Market",
                             Description = "Expensive but delisous"
                         }
@@ -50,9 +50,9 @@ namespace CityInfo.API
                         },
                         new PointsOfInterestsDto()
                         {
-                            Id = 1,
+                            Id = 2,
                             Name = "Pizza Hut",
-                            Description = "Pizza Hut"
+                            Description = "Pizza Hut next bus halt"
                         }
                     }
                 },
@@ -71,7 +71,7 @@ namespace CityInfo.API
                         },
                         new PointsOfInterestsDto()
                         {
-                            Id = 1,
+                            Id = 2,
                             Name = "Blue Sky",
                             Description = "Tasty chineese foods"
                         }
