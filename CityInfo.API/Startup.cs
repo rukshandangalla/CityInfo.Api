@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using NLog.Extensions.Logging;
+using NLog.Web;
 
 namespace CityInfo.API
 {
@@ -19,7 +21,7 @@ namespace CityInfo.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole();
+            ConfigureLogger(app, env, loggerFactory);
 
             if (env.IsDevelopment())
             {
@@ -32,6 +34,16 @@ namespace CityInfo.API
 
             app.UseStatusCodePages();
             app.UseMvc();
+        }
+
+        private void ConfigureLogger(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        {
+            loggerFactory.AddConsole();
+            loggerFactory.AddDebug();
+            loggerFactory.AddNLog();
+            app.AddNLogWeb();
+
+            env.ConfigureNLog("nlog.config");
         }
     }
 }
