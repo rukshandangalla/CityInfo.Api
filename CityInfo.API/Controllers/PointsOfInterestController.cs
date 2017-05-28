@@ -1,4 +1,5 @@
 ﻿using CityInfo.API.Models;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 
@@ -11,7 +12,6 @@ namespace CityInfo.API.Controllers
         public IActionResult GetPointsOfInterest(int cityId)
         {
             var city = CitiesDataStore.Current.Cities.FirstOrDefault(i => i.Id == cityId);
-
             if (city == null)
             {
                 return NotFound();
@@ -31,7 +31,6 @@ namespace CityInfo.API.Controllers
             }
 
             var pointOfInterest = city.PointsOfInterest.FirstOrDefault(p => p.Id == id);
-
             if (pointOfInterest == null)
             {
                 return NotFound();
@@ -59,7 +58,6 @@ namespace CityInfo.API.Controllers
             }
 
             var city = CitiesDataStore.Current.Cities.FirstOrDefault(i => i.Id == cityId);
-
             if (city == null)
             {
                 return NotFound();
@@ -99,21 +97,68 @@ namespace CityInfo.API.Controllers
             }
 
             var city = CitiesDataStore.Current.Cities.FirstOrDefault(i => i.Id == cityId);
-
             if (city == null)
             {
                 return NotFound();
             }
 
-            var pointsOfInterestFromStore = city.PointsOfInterest.FirstOrDefault(p => p.Id == id);
-
-            if (pointsOfInterestFromStore == null)
+            var pointOfInterestFromStore = city.PointsOfInterest.FirstOrDefault(p => p.Id == id);
+            if (pointOfInterestFromStore == null)
             {
                 return NotFound();
             }
 
-            pointsOfInterestFromStore.Name = pointOfInterest.Name;
-            pointsOfInterestFromStore.Description = pointOfInterest.Description;
+            pointOfInterestFromStore.Name = pointOfInterest.Name;
+            pointOfInterestFromStore.Description = pointOfInterest.Description;
+
+            return NoContent();
+        }
+
+        [HttpPatch("{cityId}/pointsofinterest/{id}")]
+        public IActionResult PartiallyUpdatePointOfInterest(int cityId, int id, [FromBody] JsonPatchDocument<PointOfInterestUpdateDto> patchDoc)
+        {
+            if (patchDoc == null)
+            {
+                return BadRequest();
+            }
+
+            var city = CitiesDataStore.Current.Cities.FirstOrDefault(i => i.Id == cityId);
+            if (city == null)
+            {
+                return NotFound();
+            }
+
+            var pointOfInterestFromStore = city.PointsOfInterest.FirstOrDefault(p => p.Id == id);
+            if (pointOfInterestFromStore == null)
+            {
+                return NotFound();
+            }
+
+            var pointOfInterestToPatch = new PointOfInterestUpdateDto()
+            {
+                Name = pointOfInterestFromStore.Name,
+                Description = pointOfInterestFromStore.Description
+            };
+
+            patchDoc.ApplyTo(pointOfInterestToPatch, ModelState);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (pointOfInterestToPatch.Description == pointOfInterestToPatch.Name)
+            {
+                ModelState.AddModelError("Description", "The provided description should be different from the name.");
+            }
+
+            TryValidateModel(pointOfInterestToPatch);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            pointOfInterestFromStore.Name = pointOfInterestToPatch.Name;
+            pointOfInterestFromStore.Description = pointOfInterestToPatch.Description;
 
             return NoContent();
         }
