@@ -22,9 +22,8 @@ namespace CityInfo.API.Controllers
         {
             try
             {
-                throw new Exception("new Exception");
-
                 var city = CitiesDataStore.Current.Cities.FirstOrDefault(i => i.Id == cityId);
+
                 if (city == null)
                 {
                     _logger.LogInformation($"city with id {cityId} wasn't found.");
@@ -70,7 +69,7 @@ namespace CityInfo.API.Controllers
 
             if (pointOfInterest.Description == pointOfInterest.Name)
             {
-                ModelState.AddModelError("Description", "The provided description should be different from the name.");
+                ModelState.AddModelError("Description", Startup.Configuration["configSettings:DuplicateNameError"]);
             }
 
             if (!ModelState.IsValid)
@@ -109,7 +108,7 @@ namespace CityInfo.API.Controllers
 
             if (pointOfInterest.Description == pointOfInterest.Name)
             {
-                ModelState.AddModelError("Description", "The provided description should be different from the name.");
+                ModelState.AddModelError("Description", Startup.Configuration["configSettings:DuplicateNameError"]);
             }
 
             if (!ModelState.IsValid)
@@ -169,7 +168,7 @@ namespace CityInfo.API.Controllers
 
             if (pointOfInterestToPatch.Description == pointOfInterestToPatch.Name)
             {
-                ModelState.AddModelError("Description", "The provided description should be different from the name.");
+                ModelState.AddModelError("Description", Startup.Configuration["configSettings:DuplicateNameError"]);
             }
 
             TryValidateModel(pointOfInterestToPatch);
