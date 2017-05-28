@@ -19,15 +19,15 @@ namespace CityInfo.API
                     Id = 1,
                     Name = "Colombo",
                     Description = "Main economic city of the Sri Lanka",
-                    PointsOfInterest = new List<PointsOfInterestsDto>()
+                    PointsOfInterest = new List<PointOfInterestsDto>()
                     {
-                        new PointsOfInterestsDto()
+                        new PointOfInterestsDto()
                         {
                             Id = 1,
                             Name = "SubWay",
                             Description = "Eat Fresh"
                         },
-                        new PointsOfInterestsDto()
+                        new PointOfInterestsDto()
                         {
                             Id = 2,
                             Name = "Manhatton Fish Market",
@@ -40,15 +40,15 @@ namespace CityInfo.API
                     Id = 2,
                     Name = "Nugegoda",
                     Description = "Where my 1st annex located",
-                    PointsOfInterest = new List<PointsOfInterestsDto>()
+                    PointsOfInterest = new List<PointOfInterestsDto>()
                     {
-                        new PointsOfInterestsDto()
+                        new PointOfInterestsDto()
                         {
                             Id = 1,
                             Name = "Mac Donalds",
                             Description = "Fast food in a style"
                         },
-                        new PointsOfInterestsDto()
+                        new PointOfInterestsDto()
                         {
                             Id = 2,
                             Name = "Pizza Hut",
@@ -61,15 +61,15 @@ namespace CityInfo.API
                     Id = 3,
                     Name = "Maharagama",
                     Description = "Where I currently live",
-                    PointsOfInterest = new List<PointsOfInterestsDto>()
+                    PointsOfInterest = new List<PointOfInterestsDto>()
                     {
-                        new PointsOfInterestsDto()
+                        new PointOfInterestsDto()
                         {
                             Id = 1,
                             Name = "Red Lantern",
                             Description = "All types of chinese foods"
                         },
-                        new PointsOfInterestsDto()
+                        new PointOfInterestsDto()
                         {
                             Id = 2,
                             Name = "Blue Sky",

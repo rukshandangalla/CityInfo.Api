@@ -1,6 +1,6 @@
 ﻿namespace CityInfo.API.Models
 {
-    public class PointsOfInterestsDto
+    public class PointOfInterestsDto
     {
         public int Id { get; set; }
 

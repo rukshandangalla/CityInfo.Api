@@ -48,14 +48,13 @@ namespace CityInfo.API.Controllers
                 return BadRequest();
             }
 
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             if (pointOfInterest.Description == pointOfInterest.Name)
             {
                 ModelState.AddModelError("Description", "The provided description should be different from the name.");
+            }
+
+            if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
             }
 
@@ -69,7 +68,7 @@ namespace CityInfo.API.Controllers
             //need to improve
             var maxPointOfInterestId = CitiesDataStore.Current.Cities.SelectMany(c => c.PointsOfInterest).Max(p => p.Id);
 
-            var finalPointofInterest = new PointsOfInterestsDto()
+            var finalPointofInterest = new PointOfInterestsDto()
             {
                 Id = ++maxPointOfInterestId,
                 Name = pointOfInterest.Name,
@@ -79,6 +78,44 @@ namespace CityInfo.API.Controllers
             city.PointsOfInterest.Add(finalPointofInterest);
 
             return CreatedAtRoute("GetPointOfInterest", new { cityId = cityId, id = finalPointofInterest.Id }, finalPointofInterest);
+        }
+
+        [HttpPut("{cityId}/pointsofinterest/{id}")]
+        public IActionResult UpdatePointOfInterest(int cityId, int id, [FromBody] PointOfInterestCreationDto pointOfInterest)
+        {
+            if (pointOfInterest == null)
+            {
+                return BadRequest();
+            }
+
+            if (pointOfInterest.Description == pointOfInterest.Name)
+            {
+                ModelState.AddModelError("Description", "The provided description should be different from the name.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var city = CitiesDataStore.Current.Cities.FirstOrDefault(i => i.Id == cityId);
+
+            if (city == null)
+            {
+                return NotFound();
+            }
+
+            var pointsOfInterestFromStore = city.PointsOfInterest.FirstOrDefault(p => p.Id == id);
+
+            if (pointsOfInterestFromStore == null)
+            {
+                return NotFound();
+            }
+
+            pointsOfInterestFromStore.Name = pointOfInterest.Name;
+            pointsOfInterestFromStore.Description = pointOfInterest.Description;
+
+            return NoContent();
         }
     }
 }
